@@ -19,7 +19,24 @@ export default function Signup() {
 
   const handleSignup = (event) => {
     event.preventDefault();
-    // do firebase stuff
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(emailAddress, password)
+      .then((result) => {
+        result.user.updateProfile({
+          displayName: firstName,
+          photoURL: `/images/films/users/${Math.floor(Math.random()) * 5 + 1}.png`,
+        });
+      })
+      .then(() => {
+        history.push(ROUTES.BROWSE);
+      })
+      .catch((error) => {
+        setFirstName('');
+        setPassword('');
+        setEmailAddress('');
+        setError(error.message);
+      });
   };
 
   return (
