@@ -70,7 +70,7 @@ Header.Profile = function HeaderProfile({ children, ...restProps }) {
 };
 
 Header.Picture = function HeaderPicture({ src, ...restProps }) {
-  return <Picture {...restProps} src={`/images/users/${src}.png`} />;
+  return <Picture {...restProps} src={src} />;
 };
 
 Header.Dropdown = function HeaderDropdown({ children, ...restProps }) {
