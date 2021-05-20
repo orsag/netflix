@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { SelectProfileContainer } from './profiles';
 import { FooterContainer } from './footer';
+import Fuse from 'fuse.js';
 import { FirebaseContext } from '../context/firebase';
 import { Loading, Header, Card, Player } from '../components';
 import * as ROUTES from '../constants/routes';
@@ -25,6 +26,17 @@ export function BrowseContainer({ slides }) {
   useEffect(() => {
     setSlideRows(slides[category]);
   }, [slides, category]);
+
+  useEffect(() => {
+    const fuse = new Fuse(slideRows, { keys: ['data.description', 'data.title', 'data.genre']});
+    const results = fuse.search(searchTerm).map(({ item }) => item);
+    if (slideRows.length > 0 && searchTerm.length >= 3 && results.length > 0) {
+      setSlideRows(results);
+      debugger
+    } else {
+      setSlideRows(slides[category]);
+    }
+  }, [searchTerm]);
 
   // eslint-disable-next-line no-nested-ternary
   return profile.displayName ? (
